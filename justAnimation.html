@@ -22,8 +22,9 @@ https://github.com/Team-Code/KA_Offline -->
 
      var canvasX = 1280;
      var canvasY = 960;
-     var bigDot = 15;
-     var smallDot = 5;
+     var bigDot = 30;
+     var smallDot = 5; //add this to dotDraw and others
+
 
      var sketchProc = function(processingInstance) {
          with (processingInstance) {
@@ -32,7 +33,7 @@ https://github.com/Team-Code/KA_Offline -->
 
              // Program CodeGoesHere
 
-
+             background(207, 207, 207);
              var currentScene;
 
 
@@ -59,9 +60,9 @@ https://github.com/Team-Code/KA_Offline -->
                  if (currentScene === 5){
                      background(207, 207, 207);
                      fill(15, 15, 15);
-                     ellipse(positions[i].x, positions[i].y, 30, 30); //big black dot
+                     ellipse(positions[i].x, positions[i].y, bigDot, bigDot); //big black dot
                      fill(207, 207, 207);
-                     ellipse(positions[i].x, positions[i].y, 5, 5); //little grey dot
+                     ellipse(positions[i].x, positions[i].y, smallDot, smallDot); //little grey dot
                  }
              };
 
@@ -139,9 +140,9 @@ https://github.com/Team-Code/KA_Offline -->
                  var counter = 0; // will count amount of dots
                  background(207, 207, 207);
                  fill(15, 15, 15);
-                 ellipse(x, y, 30, 30);
+                 ellipse(x, y, bigDot, bigDot);
                  fill(207, 207, 207);
-                 ellipse(x, y, 5, 5);
+                 ellipse(x, y, smallDot, smallDot);
 
                  //mouse is clicked & new dot appears in random place
                  mouseClicked = function(){
@@ -152,9 +153,9 @@ https://github.com/Team-Code/KA_Offline -->
                          x = random(30,1170);
                          y = random(30,930);
                          //text("click", 200,200);
-                         ellipse(x, y, 30, 30);
+                         ellipse(x, y, bigDot, bigDot);
                          fill(207, 207, 207); //little grey dot
-                         ellipse(x, y, 5, 5);
+                         ellipse(x, y, smallDot, smallDot);
                          counter+=1;
                      }
                      if (counter === 2){ //set how many dots will be used to calibrate webgazer
