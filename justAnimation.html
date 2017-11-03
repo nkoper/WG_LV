@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<!-- This is based on DillingerLee's great template here:
+https://github.com/Team-Code/KA_Offline -->
+<html> 
+ <head>
+    <title>Animation Testing</title>
+</head>
+ <body>
+    <p align="center"> 
+	<!--This draws the Canvas on the webpage -->
+      <canvas id="mycanvas"></canvas> 
+    </p>
+ </body>
+ 
+ <!-- Run all the JavaScript stuff -->
+ <!-- Include the processing.js library -->
+ <!-- See https://khanacademy.zendesk.com/hc/en-us/articles/202260404-What-parts-of-ProcessingJS-does-Khan-Academy-support- for differences -->
+ <!-- Animation script -->
+ <script src="https://cdn.jsdelivr.net/processing.js/1.4.8/processing.min.js"></script>
+
+ <script>
+
+     var canvasX = 1280;
+     var canvasY = 960;
+     var bigDot = 15;
+     var smallDot = 5;
+
+     var sketchProc = function(processingInstance) {
+         with (processingInstance) {
+             size(canvasX, canvasY);
+             frameRate(30);
+
+             // Program CodeGoesHere
+
+
+             var currentScene;
+
+
+             var positions = [ //array of objects to store positions
+                 {x: 1/6*canvasX, y: 1/6*canvasY}, //128 = cX - 1100, 160 = cY - 800
+                 {x: 3/6*canvasX, y: 1/6*canvasY}, //640 = cX - 640
+                 {x: 5/6*canvasX, y: 1/6*canvasY}, //top row 1152 = cX - 128
+                 {x: 2/6*canvasX, y: 2/6*canvasY}, //384 = cX-896 320 = cY
+                 {x: 4/6*canvasX, y: 2/6*canvasY}, //second row
+                 {x: 1/6*canvasX, y: 3/6*canvasY},
+                 {x: 3/6*canvasX, y: 3/6*canvasY},
+                 {x: 5/6*canvasX, y: 3/6*canvasY},//third row
+                 {x: 2/6*canvasX, y: 4/6*canvasY},
+                 {x: 4/6*canvasX, y: 4/6*canvasY}, //4th row
+                 {x: 1/6*canvasX, y: 5/6*canvasY},//
+                 {x: 3/6*canvasX, y: 5/6*canvasY},
+                 {x: 5/6*canvasX, y: 5/6*canvasY} //lastrow
+             ];
+
+
+             var i = 0; // Index of positions array
+
+             var drawDot = function() {
+                 if (currentScene === 5){
+                     background(207, 207, 207);
+                     fill(15, 15, 15);
+                     ellipse(positions[i].x, positions[i].y, 30, 30); //big black dot
+                     fill(207, 207, 207);
+                     ellipse(positions[i].x, positions[i].y, 5, 5); //little grey dot
+                 }
+             };
+
+
+             var timeOut = 1000; // Time out in milliseconds, defines how long each dot remains on the screen
+             var elapsed = 0; // Time elapsed in milliseconds since the last dot was drawn
+
+// this will animate calibration scene
+             draw = function() {
+                 // After timeOut milliseconds the if condition becomes true
+                 if ((millis() - elapsed > timeOut)&&(currentScene===5)){
+                     drawDot(); // Draws a single dot
+                     i = (i + 1) % positions.length; // Updates i index
+                     elapsed = millis();  // Updates elapsed variable
+                 }
+             };
+
+//to write info  screens
+             var infoScreen = function(title, infos){
+                 fill(67, 67, 247);
+                 textAlign(CENTER, CENTER);
+                 textSize(60);
+                 text(title, 600, 60);
+                 textSize(30);
+                 text(infos, 600, 160);
+             };
+
+
+//to debuggggg
+             /*
+             var scenesAr = [drawScene1, drawScene2, drawScene3, drawScene4, drawScene5];
+             for(var idxScn = 0; idxScn < scenesAr.length; i++){
+                 fill(5, 5, 5);
+                 textSize(20);
+                 text("current scene is :" + currentScene, 20, 200);
+             }
+             */
+
+             background(207, 207, 207);
+
+             var drawScene1 = function() {
+                 currentScene = 1;
+                 background(207, 207, 207);
+                 infoScreen("Hello!", "\nPlease place your face within green lines \nand try to keep your head motionless. \nYou may rest your head on your hand. \n\nPress SPACEBAR to continue.");
+
+
+             };
+
+             var drawScene2 = function() {
+                 currentScene = 2;
+                 background(207, 207, 207);
+                 infoScreen("Task #1", "\nYour task is very simple. \nA dot will appear on the screen. \nYour task is to first fixate that dot with your gaze, \nthen click on it with the mouse! \nPress SPACEBAR to continue.");
+
+
+             };
+
+             var drawScene4 = function(){
+                 currentScene = 4;
+                 background(207, 207, 207);
+                 infoScreen("Task #2", "\nThis time, your task is even simpler. \nA dot will appear on the screen. \nYour task is to fixate that dot with your gaze." +
+                     " \nPress SPACEBAR to continue.");
+             };
+
+//calibration scene: to add - was calibration succesful?
+             var drawScene5 = function() {
+                 currentScene = 5;
+                 background(207, 207, 207);
+             };
+
+//WebGazer training scene
+             var drawScene3 = function() {
+                 currentScene = 3;
+                 var x = random(30,1170);
+                 var y = random(30,930);
+                 var counter = 0; // will count amount of dots
+                 background(207, 207, 207);
+                 fill(15, 15, 15);
+                 ellipse(x, y, 30, 30);
+                 fill(207, 207, 207);
+                 ellipse(x, y, 5, 5);
+
+                 //mouse is clicked & new dot appears in random place
+                 mouseClicked = function(){
+                     if((mouseX<x+15&&mouseX>x-15&&mouseY<y+15&&mouseY>y-15)&&(currentScene === 3)) //checks if mouse is inside
+                     {
+                         background(207, 207, 207);
+                         fill(15, 15, 15);
+                         x = random(30,1170);
+                         y = random(30,930);
+                         //text("click", 200,200);
+                         ellipse(x, y, 30, 30);
+                         fill(207, 207, 207); //little grey dot
+                         ellipse(x, y, 5, 5);
+                         counter+=1;
+                     }
+                     if (counter === 2){ //set how many dots will be used to calibrate webgazer
+                         drawScene4();
+                     }
+                 };
+             };
+
+
+
+
+
+// this is used to navigate between the scenes.
+             keyPressed = function(){
+                 if ((currentScene === 1)&&(keyCode === 32)){
+                     drawScene2();
+                 } else if ((currentScene === 2)&&(keyCode === 32)) {
+                     drawScene3();
+                 } else if ((currentScene === 4)&&(keyCode === 32)) {
+                     drawScene5();
+                 } else if ((currentScene === 5)&&(keyCode === 32)) {
+                     drawScene1();
+                 }
+             };
+
+             drawScene1();
+         }};
+
+     // strange bug... in scene 5 if you mouse click you jump back to scene 4. whyyyyyy
+
+     // Get the canvas that Processing-js will use
+     var canvas = document.getElementById("mycanvas");
+     // Pass the function sketchProc (defined in myCode.js) to Processing's constructor.
+     var processingInstance = new Processing(canvas, sketchProc);
+
+ </script>
+
+
+</html>
